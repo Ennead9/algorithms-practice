@@ -2,53 +2,50 @@
 #include <stdlib.h>
 #include <time.h>
 
-int quickSort(int arr[], int n)
+void quickSort(int arr[], int low, int high)
 {
-    // Select pivot (any, but here is first val)
-    int pivot = arr[n-1];
+    int pivot = arr[high]; // Set n - 1 as pivot
+    int i = low - 1;
+    
+    if(low < pivot){
+
+    }
 }
 
 int main()
 {
-    // FILE type, create file pointer (*pF), open( file name, w for write);
-    FILE *pF = fopen("logC.txt", "w");
-    
+
     clock_t start, end;
-    int times[3] = {0}; // Array to store 
-    
-    srand(time(NULL));
-    
-    // Loop over n
+    double cpu_time_used;
+
+    // Main loop (loop over n)
     for(int n = 50; n <= 200; n *= 2)
     {
-        int arr[n];
-        fprintf(pF, "Size: %d\n", n);
-        
-        
-        
-        // Create data set
+        //int *data = (int *)malloc(n * sizeof(int));
+
+        // Static array for testing
+        int data[7] = {4, 2, 7, 5, 1, 6, 3};
+        /* Randomly construct data set of size n
         for(int i = 0; i < n; i++)
         {
-            arr[i] = rand();
-            fprintf(pF, "%d\n", arr[i]);
+            data[i] = rand() % 1001;
+        }*/
+
+        // Call function on data set
+        start = clock();
+        quickSort(data, 0, n - 1);
+        end = clock();
+
+        cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+        printf("Size: %d, Time: %f\n", n, cpu_time_used);
+
+        // Print result
+        for(int i = 0; i < n; i++)
+        {
+            printf("Val: %d\n", data[i]);
         }
-        // Call function
-        
-        
-        
-        
-        fprintf(pF, "End of set\n\n");
+
     }
-    
-    // Write results to file/log
-    
-    /* Test print
-    for(int i = 0; i < n; i++)
-    {
-        printf("Val: %d\n", arr[i]);
-    }*/
-    
-    fclose(pF); // Close file when done
-    
+
     return 0;
 }
