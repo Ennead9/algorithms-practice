@@ -7,14 +7,14 @@ void swap(int *first, int *second){
     *first = *second;
     *second = temp;
 }
-// Find pivot and sort array
+// Find pivot & sort array
 int partition(int arr[], int lower, int upper){
     
     int pivot = arr[upper]; // Set pivot (n-1)
     int i = (lower - 1);
     int j;
 
-    // Loop over array to compare against pivot val
+    // Loop over array to compare against pivot
     for(j = lower; j < upper; j++){
         if(arr[j] <= pivot){
             i++;
@@ -45,35 +45,22 @@ int main()
     // Main loop over n
     for(int n = 100000; n <= 1600000; n *= 2){
 
-        int *test = malloc(sizeof(int) * n); // Construct variably-sized array of size n
+        // Construct variably-sized array of size n
+        int *data = malloc(sizeof(int) * n);
 
         // Randomly construct dataset
         for(int i = 0; i < n; i++){
-            test[i] = rand() % 1001;
+            data[i] = rand() % 1001;
         }
-        /*
-        printf("\nArray of size %d:\nBefore: \n", n);
-        for(int j = 0; j < n; j++){
-            printf("%d ", test[j]);
-        }*/
 
-        // Call quicksort, time using clock()
+        // Call quicksort & time using clock()
         t = clock();
-        quickSort(test, 0, n-1);
+        quickSort(data, 0, n-1);
         t = clock() - t;
         double elapsed = ((double)t)/CLOCKS_PER_SEC;
         
-        /*
-        printf("\nSorted: \n");
-        for(int j = 0; j < n; j++){
-            printf("%d ", test[j]);
-        }*/
-        
-        printf("\n");
-        printf("\nTime (size: %d): %f", n, elapsed);
+        printf("\nTime (size: %d): %f\n", n, elapsed);
     }
     
-    
-
     return 0;
 }
