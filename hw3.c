@@ -42,6 +42,23 @@ void quickSort(int arr[], int lower, int upper)
 int main()
 {
     clock_t t;
+    srand(time(0));
+
+    // Main loop over n
+    for(int n = 50; n <= 200; n *= 2){
+
+        int *test = malloc(sizeof(int) * n); // Construct variably-sized array of size n
+
+        // Randomly construct dataset
+        for(int i = 0; i < n; i++){
+            test[i] = rand() % 1001;
+        }
+        printf("Array of size %d:\n", n);
+        for(int j = 0; j < n; j++){
+            printf("%d\n", test[j]);
+        }
+        printf("\n");
+    }
 
     // Create data set
     int data[7] = {3, 6, 7, 5, 1, 2, 4};
