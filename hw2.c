@@ -2,26 +2,42 @@
 #include <stdlib.h>
 #include <time.h>
 
+void swap(int *first, int *second){
+    int temp = *first;
+    *first = *second;
+    *second = temp;
+}
+int partition(int arr[], int lower, int upper){
+    
+    int pivot = arr[upper]; // Set pivot (n-1)
+    int i = (lower - 1);
+    int j;
+
+    // Loop over array to compare against pivot val
+    for(j = lower; j < upper; j++){
+        if(arr[j] < pivot){
+            i++;
+            swap();
+        }
+    }
+}
 void quickSort(int arr[], int low, int high)
 {
-    int pivot = arr[high]; // Set n - 1 as pivot
-    int i = low - 1;
-    
-    if(low < pivot){
+    int partitionIndex = partition(arr, low, high);
+
+    if(j < pivot){ // value at j is less than pivot
 
     }
 }
 
 int main()
 {
-
-    clock_t start, end;
-    double cpu_time_used;
-
+    int size = 7;
     // Main loop (loop over n)
-    for(int n = 50; n <= 200; n *= 2)
+    for(int n = 0; n <= size; n++)
     {
         //int *data = (int *)malloc(n * sizeof(int));
+        printf("--------- Start of loop %d ----------\n", n);
 
         // Static array for testing
         int data[7] = {4, 2, 7, 5, 1, 6, 3};
@@ -32,19 +48,14 @@ int main()
         }*/
 
         // Call function on data set
-        start = clock();
-        quickSort(data, 0, n - 1);
-        end = clock();
-
-        cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
-        printf("Size: %d, Time: %f\n", n, cpu_time_used);
+        //quickSort(data, 0, n - 1);
 
         // Print result
-        for(int i = 0; i < n; i++)
+        for(int i = 0; i < size; i++)
         {
-            printf("Val: %d\n", data[i]);
+            printf("Val: %d at data[%d]\n", data[i], i);
         }
-
+        printf("----- End of loop %d-------\n", n);
     }
 
     return 0;
