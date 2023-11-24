@@ -16,20 +16,18 @@ int partition(int arr[], int lower, int upper){
 
     // Loop over array to compare against pivot val
     for(j = lower; j < upper; j++){
-        if(arr[j] < pivot){
+        if(arr[j] <= pivot){
             i++;
             swap(&arr[i], &arr[j]);
         }
     }
     swap(&arr[i+1], &arr[upper]); // Swap pivot so it's in the right spot
 
-    return i;
+    return i+1;
 }
 // Recursive quickSort function
 void quickSort(int arr[], int lower, int upper)
 {
-    int partitionIndex = partition(arr, lower, upper);
-
     if(upper > lower){
         
         int partitionIndex = partition(arr, lower, upper);
@@ -45,7 +43,7 @@ int main()
     srand(time(0));
 
     // Main loop over n
-    for(int n = 50; n <= 200; n *= 2){
+    for(int n = 100000; n <= 1600000; n *= 2){
 
         int *test = malloc(sizeof(int) * n); // Construct variably-sized array of size n
 
@@ -53,33 +51,29 @@ int main()
         for(int i = 0; i < n; i++){
             test[i] = rand() % 1001;
         }
-        printf("Array of size %d:\n", n);
+        /*
+        printf("\nArray of size %d:\nBefore: \n", n);
         for(int j = 0; j < n; j++){
-            printf("%d\n", test[j]);
-        }
+            printf("%d ", test[j]);
+        }*/
+
+        // Call quicksort, time using clock()
+        t = clock();
+        quickSort(test, 0, n-1);
+        t = clock() - t;
+        double elapsed = ((double)t)/CLOCKS_PER_SEC;
+        
+        /*
+        printf("\nSorted: \n");
+        for(int j = 0; j < n; j++){
+            printf("%d ", test[j]);
+        }*/
+        
         printf("\n");
+        printf("\nTime (size: %d): %f", n, elapsed);
     }
-
-    // Create data set
-    int data[7] = {3, 6, 7, 5, 1, 2, 4};
-
-    printf("Before: ");
-    for(int i = 0; i < 7; i++){
-        printf("%d ", data[i]);
-    }
-    printf("\n");
     
-    // Call quicksort, time using clock()
-    t = clock();
-    quickSort(data, 0, 6);
-    t = clock() - t;
-    double elapsed = ((double)t)/CLOCKS_PER_SEC;
-
-    printf("\nSorted: ");
-    for(int i = 0; i < 7; i++){
-        printf("%d ", data[i]);
-    }
-    printf("\nTime: %f", elapsed);
+    
 
     return 0;
 }
