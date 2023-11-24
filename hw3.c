@@ -41,6 +41,8 @@ void quickSort(int arr[], int lower, int upper)
 
 int main()
 {
+    clock_t t;
+
     // Create data set
     int data[7] = {3, 6, 7, 5, 1, 2, 4};
 
@@ -49,14 +51,18 @@ int main()
         printf("%d ", data[i]);
     }
     printf("\n");
-    // Call quicksort
+    
+    // Call quicksort, time using clock()
+    t = clock();
     quickSort(data, 0, 6);
+    t = clock() - t;
+    double elapsed = ((double)t)/CLOCKS_PER_SEC;
 
-    printf("\nAfter: ");
+    printf("\nSorted: ");
     for(int i = 0; i < 7; i++){
         printf("%d ", data[i]);
     }
-    printf("\n");
+    printf("\nTime: %f", elapsed);
 
     return 0;
 }
