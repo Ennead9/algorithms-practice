@@ -32,7 +32,7 @@ void quickSort(int arr[], int lower, int upper)
         
         int partitionIndex = partition(arr, lower, upper);
 
-        quickSort(arr, lower, partitionIndex-1);
+        quickSort(arr, lower, partitionIndex - 1);
         quickSort(arr, partitionIndex + 1, upper);
     }
 }
@@ -43,7 +43,7 @@ int main()
     srand(time(0));
 
     // Main loop over n
-    for(int n = 100000; n <= 1600000; n *= 2){
+    for(int n = 100000; n <= 1000000; n *= 2){
 
         // Construct variably-sized array of size n
         int *data = malloc(sizeof(int) * n);

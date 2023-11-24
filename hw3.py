@@ -1,6 +1,5 @@
 import random
 import time
-import sys # attempting to force it to handle 1.6m data set size :P
 
 # Find pivot & sort array, 
 def partition(arr, lower, upper):
@@ -21,15 +20,13 @@ def quickSort(arr, lower, upper):
         partition_index = partition(arr, lower, upper)
 
         quickSort(arr, lower, partition_index-1)
-        quickSort(arr, partition_index+1, upper)
+        quickSort(arr, partition_index + 1, upper)
 
 
 def main():
-    
-    sys.setrecursionlimit(2000)
-    
+
     n = 100000  # size of array
-    while n <= 1600000:
+    while n <= 1000000:
 
         # randomly populate data array with numbers between 0 & 1000
         data = [random.randint(0, 1000) for _ in range(n)]
