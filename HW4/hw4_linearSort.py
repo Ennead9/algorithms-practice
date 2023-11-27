@@ -21,18 +21,31 @@ def countSort(arr):
     print(f"countArr: {countArr}")
  
     # 3. Create output array (list) with len equal to # of elements
-    outputArr = [0 for i in range(maxVal+1)]
-    print(outputArr)
+    outputArr = [0 for i in range(countArr[-1])]
+    print(f"Initial outputArr: {outputArr}")
 
-    # 3a. Calculate index using the val stored against 
-    for i in range(1, len(arr)):
-        print(countArr[i])
+    print(arr)
+    # Traverse input array from end to preserve stability
+    for i in range(len(arr) - 1, -1, -1):
+
+        # Value at countArr[arr[i]] represents cumulative count of the element arr[i] in original array
+        # The cumulative count indicates total number of elements in the original array that are
+        # less than or equal to arr[i]
+        # -1 part is to adjust for zero-based indexing
+        # EXAMPLE:
+        # If arr[i] is 3, and countArr[i] is 5, this means there are 5 elements in arr that are <= 3
+        # To place 3 in the sorted array, you need to put it in the 4th position, so
+        # countArr[3] - 1 = 4
+        outputArr[countArr[arr[i]] - 1] = arr[i]
+        countArr[arr[i]] -= 1 # need to decrement the cumulative count since we've already placed a number
+    print(f"FINAL SORTED (outputArr): {outputArr}")
 
 
 def main():
 
     # Create test list & print
     data = [0, 3, 4, 6, 3, 2, 7]
+    test2 = [3, 6, 6, 3, 1, 0, 1]
     print(f"Unsorted: {data}\n")
     countSort(data)
 
