@@ -45,18 +45,15 @@ def bubbleSort(arr):
         num_passes += 1
         if not swapped:
             break
-    print(f"Sorted ({num_passes} passes): {arr}")
+    print(f"Sorted in {num_passes} passes")
 
 
 def main():
 
-    n = 100000 # Size of array
+    n = 10000 # Size of array
 
     # Loop over n
-    while n <= 600000:
-
-        # simple list for testing bubble sort during dev
-        simple = [4, 2, 1, 0, 7, 5, 3, 900, 834, 32, 123, 4]
+    while n <= 60000:
 
         # Randomly populate data array with numbers between 0 & 1000
         data = [random.randint(0, 1000) for _ in range(n)]
@@ -65,12 +62,12 @@ def main():
 
         # Call linear (countSort) function & time using perf_counter()
         t1 = time.perf_counter()
-        #countSort(data)
+        countSort(data)
         t1 = time.perf_counter() - t1
 
         # Call comparison (bubbleSort) function & time
         t2 = time.perf_counter()
-        bubbleSort(simple)
+        bubbleSort(data2)
         t2 = time.perf_counter() - t2
 
         print(f"\nSize: {n}")
