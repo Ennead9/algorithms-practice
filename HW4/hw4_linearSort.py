@@ -49,20 +49,28 @@ def bubbleSort(arr):
     return num_passes
 
 
+def greyscaleValue(pixel):
+    return int(0.299 * pixel[0] + 0.587 * pixel[1] + 0.114 * pixel[2])
+
+
 def main():
 
-    n = 1000 # Size of array
+    n = 10 # Size of dataset/array (i.e., number of pixels)
 
     # Loop over n
-    while n <= 6000:
+    while n <= 40:
 
-        # Randomly populate data array with numbers between 0 & 1000
-        data = [random.randint(0, 1000) for _ in range(n)]
-        data2 = list(data)  # Copy list
+        # Randomly populate data array with RGB values
+        pixels_list = [(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)) for _ in range(n)]
+
+        greyscale_list = [greyscaleValue(pixel) for pixel in pixels_list]
+        #print(greyscale_list)
+
+        data2 = list(greyscale_list)  # Copy list
 
         # Call linear (countSort) function & time using perf_counter()
         t1 = time.perf_counter()
-        data = countSort(data)
+        data = countSort(greyscale_list)
         t1 = time.perf_counter() - t1
 
         # Call comparison (bubbleSort) function & time
