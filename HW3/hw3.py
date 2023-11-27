@@ -1,7 +1,11 @@
+# Quick Sort Algorithm
+# Adapted from C implementation on "The Algorithms" page on GitHub
+# Found here: https://github.com/TheAlgorithms
+
 import random
 import time
 
-# Find pivot & sort array, 
+# Find pivot & sort array
 def partition(arr, lower, upper):
     pivot = arr[upper]
     i = (lower - 1)
@@ -25,10 +29,11 @@ def quickSort(arr, lower, upper):
 
 def main():
 
-    n = 100000  # size of array
-    while n <= 1000000:
+    # Size of array
+    n = 100000
+    while n <= 600000:
 
-        # randomly populate data array with numbers between 0 & 1000
+        # Randomly populate data array with numbers between 0 & 1000
         data = [random.randint(0, 1000) for _ in range(n)]
 
         # Call quickSort & time using perf_counter()
@@ -38,7 +43,8 @@ def main():
     
         print(f"\nTime (size: {n}): {t:.6f}\n")
 
-        n *= 2 # Double n each time
+        # Double n each time
+        n *= 2
 
 if __name__ == "__main__":
     main()

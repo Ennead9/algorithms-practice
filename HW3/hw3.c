@@ -1,3 +1,7 @@
+// Quick Sort Algorithm
+// Credit goes to "The Algorithms" page on GitHub
+// Found here: https://github.com/TheAlgorithms
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>

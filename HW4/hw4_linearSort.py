@@ -1,4 +1,8 @@
-# Linear Sort Algorithm
+# Counting Sort Algorithm (Linear)
+# Followed this for guidance: https://www.geeksforgeeks.org/counting-sort/
+
+import random
+import time
 
 def countSort(arr):
     maxVal = max(arr)
@@ -27,14 +31,25 @@ def countSort(arr):
         countArr[arr[i]] -= 1                       # Decrement cumulative count after adding a number
 
     # Print sorted array
-    print(f"Sorted array: {outputArr}")
+    #print(f"Sorted array: {outputArr}")
 
 def main():
 
-    # Create test list & print
-    data = [1, 0, 3, 4, 6, 3, 2, 7]
-    print(f"Unsorted: {data}\n")
-    countSort(data)
+    n = 100000 # Size of array
+    while n <= 600000:
+
+        # Randomly populate data array with numbers between 0 & 1000
+        data = [random.randint(0, 1000) for _ in range(n)]
+
+        # Call quickSort function & time using perf_counter()
+        t = time.perf_counter()
+        countSort(data)
+        t = time.perf_counter() - t
+
+        print(f"\nTime (size: {n}): {t:.6f}\n")
+
+        # Double n each time
+        n *= 2
 
     
 if __name__ == "__main__":
