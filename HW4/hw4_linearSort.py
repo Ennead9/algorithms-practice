@@ -30,6 +30,7 @@ def countSort(arr):
         outputArr[countArr[arr[i]] - 1] = arr[i]    # Place numbers in correct position in outputArr
         countArr[arr[i]] -= 1                       # Decrement cumulative count after adding a number
 
+    return outputArr
 
 def bubbleSort(arr):
     num_passes = 0
@@ -45,33 +46,32 @@ def bubbleSort(arr):
         num_passes += 1
         if not swapped:
             break
-    print(f"Sorted in {num_passes} passes")
+    return num_passes
 
 
 def main():
 
-    n = 10000 # Size of array
+    n = 1000 # Size of array
 
     # Loop over n
-    while n <= 60000:
+    while n <= 6000:
 
         # Randomly populate data array with numbers between 0 & 1000
         data = [random.randint(0, 1000) for _ in range(n)]
-        # Copy list so we can use both algorithms on same data
-        data2 = list(data)
+        data2 = list(data)  # Copy list
 
         # Call linear (countSort) function & time using perf_counter()
         t1 = time.perf_counter()
-        countSort(data)
+        data = countSort(data)
         t1 = time.perf_counter() - t1
 
         # Call comparison (bubbleSort) function & time
         t2 = time.perf_counter()
-        bubbleSort(data2)
+        num_passes = bubbleSort(data2)
         t2 = time.perf_counter() - t2
 
-        print(f"\nSize: {n}")
-        print(f"Count Sort time: {t1:.6f}\nBubble Sort time: {t2:.6f}")
+        # Print results
+        print(f"\nSize: {n}\nCount Sort time: {t1:.6f}\nBubble Sort time: {t2:.6f}\nSorted in {num_passes} passes")
 
         # Double n each time
         n *= 2
