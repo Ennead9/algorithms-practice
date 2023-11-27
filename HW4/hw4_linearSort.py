@@ -30,23 +30,51 @@ def countSort(arr):
         outputArr[countArr[arr[i]] - 1] = arr[i]    # Place numbers in correct position in outputArr
         countArr[arr[i]] -= 1                       # Decrement cumulative count after adding a number
 
-    # Print sorted array
-    #print(f"Sorted array: {outputArr}")
+
+def bubbleSort(arr):
+    num_passes = 0
+
+    # Outer loop to move onto next number to move/sort
+    for i in range(len(arr)):
+        swapped = False
+        for j in range(len(arr) - i - 1):
+            if arr[j] > arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+                swapped = True
+
+        num_passes += 1
+        if not swapped:
+            break
+    print(f"Sorted ({num_passes} passes): {arr}")
+
 
 def main():
 
     n = 100000 # Size of array
+
+    # Loop over n
     while n <= 600000:
+
+        # simple list for testing bubble sort during dev
+        simple = [4, 2, 1, 0, 7, 5, 3, 900, 834, 32, 123, 4]
 
         # Randomly populate data array with numbers between 0 & 1000
         data = [random.randint(0, 1000) for _ in range(n)]
+        # Copy list so we can use both algorithms on same data
+        data2 = list(data)
 
-        # Call quickSort function & time using perf_counter()
-        t = time.perf_counter()
-        countSort(data)
-        t = time.perf_counter() - t
+        # Call linear (countSort) function & time using perf_counter()
+        t1 = time.perf_counter()
+        #countSort(data)
+        t1 = time.perf_counter() - t1
 
-        print(f"\nTime (size: {n}): {t:.6f}\n")
+        # Call comparison (bubbleSort) function & time
+        t2 = time.perf_counter()
+        bubbleSort(simple)
+        t2 = time.perf_counter() - t2
+
+        print(f"\nSize: {n}")
+        print(f"Count Sort time: {t1:.6f}\nBubble Sort time: {t2:.6f}")
 
         # Double n each time
         n *= 2
