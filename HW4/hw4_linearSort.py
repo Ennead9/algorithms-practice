@@ -7,24 +7,24 @@ def countSort(arr):
 
     countArr = [0 for i in range(maxVal+1)]
 
-    # Count of unique elements in countArr    
+    # 1. Frequency array for count of unique elements in input array   
     for i in arr:
         countArr[i] += 1
 
     print(f"countArr: {countArr}")
     print("------------")
 
-    # Modify freq array to store running sum of its own elements
+    # 2. Modify freq array to store running sum of its own elements
     for i in range(1, len(countArr)):
         countArr[i] = countArr[i - 1] + countArr[i]
     
     print(f"countArr: {countArr}")
  
-    # Create output array (list) with len equal to # of elements
+    # 3. Create output array (list) with len equal to # of elements
     outputArr = [0 for i in range(maxVal+1)]
     print(outputArr)
 
-    # Put stuff into outputArr
+    # 3a. Calculate index using the val stored against 
     for i in range(1, len(arr)):
         print(countArr[i])
 
