@@ -55,7 +55,8 @@ def rgb_countSort(arr, color_component):
     #component_values = [value for tuple in arr for value in tuple]
     component_values = [rgb[color_component] for rgb in arr]
     maxVal = max(component_values)
-    '''
+    #print(maxVal)
+
     # 1. Frequency array for count of unique elements in input array   
     countArr = [0 for i in range(256)]
     for rgb in arr:
@@ -73,15 +74,13 @@ def rgb_countSort(arr, color_component):
         countArr[rgb[color_component]] -= 1                       # Decrement cumulative count after adding a number
 
     return outputArr
-    '''
-    print(maxVal)
-    return maxVal
 
 # Applies radixSort to pixels array, once for each color_component, starting with 2 (B/blue)
 def radixSort(arr):
 
     for color_component in reversed(range(3)):
         pixels = rgb_countSort(arr, color_component) # 0 - Red, 1 - Green, 2 - Blue
+        print(pixels)
 
     return pixels
 
@@ -93,15 +92,13 @@ def main():
     # Loop over n
     while n <= 10:
 
-        pixels = [(45, 25, 250), (223, 134, 70), (80, 90, 100)]
-        ''' Test list with example RGB tuples
+        pixels = [(45, 25, 250), (223, 134, 70), (80, 90, 100), (20, 20, 20), (250, 250, 250), (38, 183, 29), (100, 100, 234)]
+
         print(pixels)
-        for item in pixels:
-            print(item)
-        '''
 
-        radixSort(pixels)
+        pixels = radixSort(pixels)
 
+        print(pixels)
         # Randomly populate data array with RGB values
         #data = [(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)) for _ in range(n)]
         #data2 = list(data)  # Copy list
