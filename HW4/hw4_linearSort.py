@@ -4,11 +4,29 @@
 import random
 import time
 
+def bubbleSort(arr):
+    num_passes = 0
+
+    # Outer loop to move onto next number to move/sort
+    for i in range(len(arr)):
+        swapped = False
+        for j in range(len(arr) - i - 1):
+            if arr[j] > arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+                swapped = True
+
+        num_passes += 1
+        if not swapped:
+            break
+    return num_passes
+
+
 def countSort(arr):
+
     maxVal = max(arr)
-    countArr = [0 for i in range(maxVal+1)]
 
     # 1. Frequency array for count of unique elements in input array   
+    countArr = [0 for i in range(maxVal+1)]
     for i in arr:
         countArr[i] += 1
 
@@ -32,25 +50,40 @@ def countSort(arr):
 
     return outputArr
 
-def bubbleSort(arr):
-    num_passes = 0
+def rgb_countSort(arr, color_component):
 
-    # Outer loop to move onto next number to move/sort
-    for i in range(len(arr)):
-        swapped = False
-        for j in range(len(arr) - i - 1):
-            if arr[j] > arr[j+1]:
-                arr[j], arr[j+1] = arr[j+1], arr[j]
-                swapped = True
+    #component_values = [value for tuple in arr for value in tuple]
+    component_values = [rgb[color_component] for rgb in arr]
+    maxVal = max(component_values)
+    '''
+    # 1. Frequency array for count of unique elements in input array   
+    countArr = [0 for i in range(256)]
+    for rgb in arr:
+        countArr[rgb[color_component]] += 1
 
-        num_passes += 1
-        if not swapped:
-            break
-    return num_passes
+    # 2. Modify freq array to store running sum of its own elements
+    for i in range(1, 256):
+        countArr[i] += countArr[i - 1]
+ 
+    # 3. Create output array (list) with len equal to # of elements
+    outputArr = [0 for i in range(countArr[-1])]
 
+    for rgb in reversed(arr):
+        outputArr[countArr[rgb[color_component]] - 1] = rgb    # Place numbers in correct position in outputArr
+        countArr[rgb[color_component]] -= 1                       # Decrement cumulative count after adding a number
 
-def greyscaleValue(pixel):
-    return int(0.299 * pixel[0] + 0.587 * pixel[1] + 0.114 * pixel[2])
+    return outputArr
+    '''
+    print(maxVal)
+    return maxVal
+
+# Applies radixSort to pixels array, once for each color_component, starting with 2 (B/blue)
+def radixSort(arr):
+
+    for color_component in reversed(range(3)):
+        pixels = rgb_countSort(arr, color_component) # 0 - Red, 1 - Green, 2 - Blue
+
+    return pixels
 
 
 def main():
@@ -58,28 +91,35 @@ def main():
     n = 10 # Size of dataset/array (i.e., number of pixels)
 
     # Loop over n
-    while n <= 40:
+    while n <= 10:
+
+        pixels = [(45, 25, 250), (223, 134, 70), (80, 90, 100)]
+        ''' Test list with example RGB tuples
+        print(pixels)
+        for item in pixels:
+            print(item)
+        '''
+
+        radixSort(pixels)
 
         # Randomly populate data array with RGB values
-        pixels_list = [(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)) for _ in range(n)]
-
-        greyscale_list = [greyscaleValue(pixel) for pixel in pixels_list]
-        #print(greyscale_list)
-
-        data2 = list(greyscale_list)  # Copy list
+        #data = [(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)) for _ in range(n)]
+        #data2 = list(data)  # Copy list
 
         # Call linear (countSort) function & time using perf_counter()
-        t1 = time.perf_counter()
-        data = countSort(greyscale_list)
-        t1 = time.perf_counter() - t1
+        #t1 = time.perf_counter()
+        #data = countSort(data)
+        #t1 = time.perf_counter() - t1
 
         # Call comparison (bubbleSort) function & time
-        t2 = time.perf_counter()
-        num_passes = bubbleSort(data2)
-        t2 = time.perf_counter() - t2
+        #t2 = time.perf_counter()
+        #num_passes = bubbleSort(data2)
+        #t2 = time.perf_counter() - t2
 
+        # print lists
+        #print(f"Countsort: {data}")
         # Print results
-        print(f"\nSize: {n}\nCount Sort time: {t1:.6f}\nBubble Sort time: {t2:.6f}\nSorted in {num_passes} passes")
+        #print(f"\nSize: {n}\nCount Sort time: {t1:.6f}\nBubble Sort time: {t2:.6f}\nSorted in {num_passes} passes")
 
         # Double n each time
         n *= 2
