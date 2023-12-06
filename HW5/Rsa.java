@@ -30,14 +30,14 @@ public class Rsa {
 		System.out.println("Average results:");
 
 		// LOOP OVER THE BIT LENGTH HERE
-		for(int j = 16; j <= 22; j += 2){
+		for(int j = 16; j <= 28; j++){
 			
 			// Generate RSA keys of bitLength k & reset timeElapsed between bit lengths
 			bitLength = j;
 			long timeElapsed = 0;
 			
 			// Loop 3 times for each bit length
-			for(int k = 1; k <= 3; k++){
+			for(int k = 1; k <= 4; k++){
 			
 				// Produce two random primes up to the specified bit length
 				BigInteger n = BigInteger.ONE;
