@@ -31,10 +31,10 @@ public class Rsa {
 		for(int j = 16; j <= 22; j += 2){
 			// Generate RSA keys of bitLength k
 			bitLength = j;
+			long timeElapsed = 0;
 			
 			// Loop 3 times for each bitLength
 			for(int k = 1; k <= 3; k++){
-				System.out.println("Run: "+k);
 			
 			// Produce two random primes up to the specified bit length
 			BigInteger n = BigInteger.ONE;
@@ -53,7 +53,7 @@ public class Rsa {
 			// calculate the upper value of the search range.
 			// max is maximum value for the given bit length. It's likely overly large. Can it be smaller?
 				BigInteger max = TWO.pow(calcBitLength+1).subtract(BigInteger.ONE);
-				System.out.println("bitLength="+calcBitLength);
+				//System.out.println("bitLength="+calcBitLength);
 				//System.out.println("bitLength="+calcBitLength+ ", max="+max);
 
 				// attempt to factor n. start at the sqrt of n and work up.
@@ -75,10 +75,11 @@ public class Rsa {
 			fjPool.invoke(forkJoinRsaTask);
 			
 			long endTime = System.currentTimeMillis();
+			timeElapsed += (endTime - startTime);
 
-			System.out.println("Elapsed time: " + (endTime-startTime) + "ms");
-			System.out.println();
-		}
+			}
+
+			System.out.println("\nbitLength="+ bitLength + "\nAverage time: " + (timeElapsed/3) + "ms");
 		}
 	}
 }
