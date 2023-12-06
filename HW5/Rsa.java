@@ -28,10 +28,14 @@ public class Rsa {
 		Random r = new Random(); // should only ever be called once in a Java program!
 	
 		// LOOP OVER THE BIT LENGTH HERE
-		for(int k = 2; k < 12; k += 2){
+		for(int j = 16; j <= 22; j += 2){
 			// Generate RSA keys of bitLength k
-			bitLength = k;
-
+			bitLength = j;
+			
+			// Loop 3 times for each bitLength
+			for(int k = 1; k <= 3; k++){
+				System.out.println("Run: "+k);
+			
 			// Produce two random primes up to the specified bit length
 			BigInteger n = BigInteger.ONE;
 			int calcBitLength = 0;
@@ -74,6 +78,7 @@ public class Rsa {
 
 			System.out.println("Elapsed time: " + (endTime-startTime) + "ms");
 			System.out.println();
+		}
 		}
 	}
 }
