@@ -30,7 +30,7 @@ public class Rsa {
 		System.out.println("Average results:");
 
 		// LOOP OVER THE BIT LENGTH HERE
-		for(int j = 16; j <= 38; j ++){
+		for(int j = 16; j <= 20; j ++){
 			
 			// Generate RSA keys of bitLength k & reset timeElapsed between bit lengths
 			bitLength = j;
@@ -155,4 +155,8 @@ class ForkJoinRsaTask extends RecursiveAction
 		taskA.join();
 	    }
     }
+}
+
+class PollardRho {
+
 }
