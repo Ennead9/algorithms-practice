@@ -30,14 +30,14 @@ public class Rsa {
 		System.out.println("Average results:");
 
 		// LOOP OVER THE BIT LENGTH HERE
-		for(int j = 16; j <= 28; j += 2){
+		for(int j = 16; j <= 38; j ++){
 			
 			// Generate RSA keys of bitLength k & reset timeElapsed between bit lengths
 			bitLength = j;
 			long timeElapsed = 0;
 			
 			// Loop 3 times for each bit length
-			for(int k = 0; k < 3; k++){
+			//for(int k = 0; k < 3; k++){
 			
 				// Produce two random primes up to the specified bit length
 				BigInteger n = BigInteger.ONE;
@@ -62,10 +62,9 @@ public class Rsa {
 					BigInteger i = n.sqrt();
 					//System.out.println("initial i="+i);
 
-					// Trying a smaller value for max, where max = 1.1 * sqrt(n)
+					// Using smaller value for max, where max = 1.1 * sqrt(n)
 					BigInteger increaseVal = i.divide(BigInteger.TEN); // Find 10% of sqrt(n)
 					BigInteger max = i.add(increaseVal); // Add this to i (basically -> newMax = 1.1*i)
-					//System.out.println("oldmax= " +oldmax+"  newMax="+max);
 
 				// Try to invoke the garbage collector before cracking so that it is less likely to happen
 				// during cracking. Java might listen.
@@ -83,10 +82,10 @@ public class Rsa {
 				
 				long endTime = System.currentTimeMillis();
 				timeElapsed += (endTime - startTime);
-			}
+			//}
 
 			// Print average time for each bit length
-			System.out.println("" + bitLength + "  " + (timeElapsed / 3));
+			System.out.println("" + bitLength + "  " + (timeElapsed));
 		}
 	}
 }
