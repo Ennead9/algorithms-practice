@@ -84,7 +84,6 @@ def radixSort(arr):
 
     for color_component in reversed(range(3)):
         pixels = rgb_countSort(arr, color_component)
-        display_colors(pixels)
     return pixels
 
 
@@ -108,15 +107,17 @@ def main():
     # Data set size
     n = 10
 
-    # Loop over n, doubling n each time
-    while n <= 10:
+    print("n        Linear - Radix (ms)  Comparison - Bubble (ms)")
+
+    # Loop over n, increasing by factor of 10 each time
+    while n <= 1000:
 
         # Create random data set & copy it
         data = [(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)) for _ in range (n)]
         data2 = list(data)
 
         # Display unsorted colors
-        display_colors(data)
+        #display_colors(data)
 
         # Debug: Print unsorted arrays
         #print(f"Unsorted:")
@@ -125,23 +126,24 @@ def main():
         # Time Count Sort (Radix Sort)
         t1 = time.perf_counter()
         data = radixSort(data)
-        t1 = time.perf_counter() - t1
+        t1 = (time.perf_counter() - t1) * 1000
 
         # Time Bubble Sort
         t2 = time.perf_counter()
-        num_passes = bubbleSort(data2)
-        t2 = time.perf_counter() - t2
+        data2 = bubbleSort(data2)
+        t2 = (time.perf_counter() - t2) * 1000
 
+        # Print results
+        print(f"{n:<6} {t1:>15.6f} {t2:>20.6f}")
+        
         # Debug: Print sorted arrays
         #print(f"Sorted:")
         #print(f"Radix: {data}\nBubble: {data2}\n")
 
-        print(f"Size: {n}\nRadix Sort time: {t1:0.6f} sec\nBubble Sort time: {t2:0.6f} sec")
-
         # Display sorted colors
         #display_colors(data)
 
-        n *= 2
+        n *= 10
 
     
 if __name__ == "__main__":
