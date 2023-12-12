@@ -3,6 +3,8 @@
 
 import random
 import time
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
 
 def bubbleSort(arr):
     num_passes = 0
@@ -80,11 +82,27 @@ def radixSort(arr):
 
     for color_component in reversed(range(3)):
         pixels = rgb_countSort(arr, color_component) # 0 - Red, 1 - Green, 2 - Blue
-        print(pixels)
+        #print(pixels)
+        display_colors(pixels)
 
     return pixels
 
 
+def display_colors(rgb_list, figsize=(10, 2)):
+    fig, ax = plt.subplots(1, figsize=figsize)
+
+    ax.axis('off')
+
+    for i, rgb in enumerate(rgb_list):
+        rect = patches.Rectangle((i, 0), 1, 1, linewidth=1, edgecolor='none', facecolor=[c/255 for c in rgb])
+        ax.add_patch(rect)
+
+    plt.xlim(0, len(rgb_list))
+    plt.ylim(0, 1)
+
+    plt.show()
+
+    
 def main():
 
     n = 10 # Size of dataset/array (i.e., number of pixels)
@@ -92,32 +110,37 @@ def main():
     # Loop over n
     while n <= 10:
 
-        pixels = [(45, 25, 250), (223, 134, 70), (80, 90, 100), (20, 20, 20), (250, 250, 250), (38, 183, 29), (100, 100, 234)]
+        #pixels = [(45, 25, 250), (223, 134, 70), (80, 90, 100), (20, 20, 20), (250, 250, 250), (38, 183, 29), (100, 100, 234)]
+        #print(f"Unsorted array of pixels: {pixels}")
 
-        print(pixels)
+        # Create random data set & copy it
+        data = [(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)) for _ in range (n)]
+        data2 = list(data)
 
-        pixels = radixSort(pixels)
+        # Display colors before
+        display_colors(data)
 
-        print(pixels)
-        # Randomly populate data array with RGB values
-        #data = [(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)) for _ in range(n)]
-        #data2 = list(data)  # Copy list
+        print(f"Unsorted lists:")
+        print(f"Radix: {data}\nBubble: {data2}\n")
+        # Time Count Sort (Radix Sort)
+        t1 = time.perf_counter()
+        data = radixSort(data)
+        t1 = time.perf_counter() - t1
 
-        # Call linear (countSort) function & time using perf_counter()
-        #t1 = time.perf_counter()
-        #data = countSort(data)
-        #t1 = time.perf_counter() - t1
+        print(f"Sorted: {data}")
+        # Time Bubble Sort
+        t2 = time.perf_counter()
+        num_passes = bubbleSort(data2)
+        t2 = time.perf_counter() - t2
 
-        # Call comparison (bubbleSort) function & time
-        #t2 = time.perf_counter()
-        #num_passes = bubbleSort(data2)
-        #t2 = time.perf_counter() - t2
+        
+        print(f"Sorted lists:")
+        print(f"Radix: {data}\nBubble: {data2}\n")
 
-        # print lists
-        #print(f"Countsort: {data}")
-        # Print results
-        #print(f"\nSize: {n}\nCount Sort time: {t1:.6f}\nBubble Sort time: {t2:.6f}\nSorted in {num_passes} passes")
+        print(f"Size: {n}\nRadix Sort time: {t1:0.6f} sec\nBubble Sort time: {t2:0.6f} sec")
 
+        # Display colors?
+        #display_colors(data)
         # Double n each time
         n *= 2
 
