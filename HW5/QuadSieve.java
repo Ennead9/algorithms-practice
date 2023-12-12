@@ -1,26 +1,23 @@
+import java.math.BigInteger;
+
 public class QuadSieve {
 
-    int n = 315;
-    public int gcd(int a, int b){
-        int gcd = 0;
-        for(int i = 1; i <= a || i <= b; i++){
-            if(a % i == 0 && b % i == 0){
-                gcd = i;
-            }
-        }
-        return gcd;
-    }
+    BigInteger n = BigInteger.valueOf(315);
 
-    int g(int x, int n) { return ((x * x) - 1) % n;}
+    BigInteger g(BigInteger x, BigInteger n){
+        return x.multiply(x).subtract(BigInteger.ONE).mod(n);
+    }
 
     public static void main(String[] args) {
         
         QuadSieve gfg = new QuadSieve();
 
-        int n = 315;
-        int x = 2, y = 2, d = 1;
+        BigInteger n = BigInteger.valueOf(315);
+        BigInteger x = BigInteger.valueOf(2);
+        BigInteger y = BigInteger.valueOf(2);
+        BigInteger d = BigInteger.ONE;
 
-        while(d == 1){
+        while(d.equals(BigInteger.ONE)){
             
             // Tortoise
             x = gfg.g(x, n);
@@ -29,11 +26,10 @@ public class QuadSieve {
             y = gfg.g(gfg.g(y, n), n);
 
             // Check gcd of |x-y| and n
-            d = gfg.gcd((x-y), gfg.n);
+            d = x.subtract(y).abs().gcd(n);
         }
 
-        // fails to find prime factor
-        if(d == gfg.n) {
+        if(d.equals(n)) {
             System.out.println("GCD not found for this");
         } else {
             System.out.println("One factor of "+n+ " is "+d);

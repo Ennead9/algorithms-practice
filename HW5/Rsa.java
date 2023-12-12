@@ -30,7 +30,7 @@ public class Rsa {
 		System.out.println("Average results:");
 
 		// LOOP OVER THE BIT LENGTH HERE
-		for(int j = 16; j <= 20; j ++){
+		for(int j = 16; j <= 35; j ++){
 			
 			// Generate RSA keys of bitLength k & reset timeElapsed between bit lengths
 			bitLength = j;
@@ -61,10 +61,12 @@ public class Rsa {
 					// attempt to factor n. start at the sqrt of n and work up.
 					BigInteger i = n.sqrt();
 					//System.out.println("initial i="+i);
-
+					
 					// Using smaller value for max, where max = 1.1 * sqrt(n)
-					BigInteger increaseVal = i.divide(BigInteger.TEN); // Find 10% of sqrt(n)
+					BigInteger divMe = BigInteger.valueOf(20);
+					BigInteger increaseVal = i.divide(divMe); // Find 10% of sqrt(n)
 					BigInteger max = i.add(increaseVal); // Add this to i (basically -> newMax = 1.1*i)
+					System.out.println("max=" +max+" i:" +i);
 
 				// Try to invoke the garbage collector before cracking so that it is less likely to happen
 				// during cracking. Java might listen.
@@ -130,8 +132,8 @@ class ForkJoinRsaTask extends RecursiveAction
 		    {
 			if (n.mod(currentPrime).equals(BigInteger.ZERO))
 			    {
-				//System.out.println("Keys (p,q): " + currentPrime+", " +
-						   //n.divide(currentPrime));
+				System.out.println("Keys (p,q): " + currentPrime+", " +
+						   n.divide(currentPrime));
 				// iF this was a "home run" hack trying to just exit as soon as a factor was found,
 				// we could do that right here. Otherwise, we have to coordinate with the threads
 				// through the "cont" variable so they know they need to exit. 
