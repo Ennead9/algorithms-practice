@@ -65,6 +65,7 @@ def print_game_instructions():
     print("  - Press 'H' for a hint.")
     print("\nPress any key to start the game...")
 
+
 def update_player_position(maze, player_pos, move):
     x, y = player_pos
     maze[x][y] = '.'  # Clear the old position
@@ -80,33 +81,73 @@ def update_player_position(maze, player_pos, move):
     maze[x][y] = '@'  # Place the player in the new position
     return maze, player_pos
 
-def play_maze_game(maze):
+
+# DFS function with memoization
+def dfs_find_path(maze, x, y, destination, path_cache):
+    if (x, y) == destination:
+        return True  # Base case: destination reached
+    
+    if not (0 <= x < len(maze) and 0 <= y < len(maze[0])) or maze[x][y] == '#':
+        return False  # Invalid move
+    
+    if path_cache[x][y] is not None:  # Return the cached result if available
+        return path_cache[x][y]
+    
+    # Mark the current cell as part of the path
+    maze[x][y] = '+'
+    
+    # Explore all possible directions
+    for dx, dy in [(-1, 0), (0, 1), (1, 0), (0, -1)]:
+        if dfs_find_path(maze, x + dx, y + dy, destination, path_cache):
+            path_cache[x][y] = True
+            return True  # Path found
+    
+    # Mark the current cell as not part of the path
+    maze[x][y] = '.'
+    path_cache[x][y] = False
+    return False
+
+
+def initialize_cache(rows, cols):
+    # Initialize the cache with None values
+    return [[None for _ in range(cols)] for _ in range(rows)]
+
+def copy_maze(maze):
+    # Create a deep copy of the maze
+    return [row[:] for row in maze]
+
+
+def play_maze_game(maze, cache):
     player_pos = (1, 0)
     maze[1][0] = '@'
-    show_hint = False
+    destination = (len(maze) - 2, len(maze[0]) - 1)
+    path_cache = copy_maze(cache)  # Use a local copy of the cache
 
     while True:
-        print_maze(maze, player_pos, show_hint)
+        print_maze(maze, player_pos, show_hint=False)
         move = input("Enter your move (W/A/S/D) or 'H' for a hint: ").upper()
 
         if move == 'H':
-            show_hint = True
+            hint_maze = copy_maze(maze)
+            dfs_find_path(hint_maze, player_pos[0], player_pos[1], destination, path_cache)
+            print_maze(hint_maze, player_pos, show_hint=True)
         elif move in ['W', 'A', 'S', 'D']:
-            show_hint = False  # Hide the hint when the player moves
             maze, player_pos = update_player_position(maze, player_pos, move)
         
         # Check for win condition
-        if player_pos == (len(maze) - 2, len(maze[0]) - 1):
+        if player_pos == destination:
             print("Congratulations, you've reached the destination!")
             break
 
 
 def main():
     rows, cols = 11, 21  # Maze dimensions
+    cache = initialize_cache(rows, cols)  # Global cache for memoization
+
     print_game_instructions()  # Print game instrunctions
     input()   # Wait for user input to continue
     maze = generate_maze(rows, cols)
-    play_maze_game(maze)
+    play_maze_game(maze, cache)
 
 
 if __name__ == "__main__":
