@@ -37,9 +37,20 @@ def generate_maze(rows, cols):
     add_path_to_maze(maze, rows, cols)
     return maze
 
-def print_maze(maze):
-    for row in maze:
-        print(' '.join(row))
+def print_maze(maze, player_pos, show_hint=False):
+    x, y = player_pos
+    for i in range(x - 1, x + 2):
+        for j in range(y - 1, y + 2):
+            if 0 <= i < len(maze) and 0 <= j < len(maze[0]):
+                char = maze[i][j]
+                if char == '+' and not show_hint:
+                    char = '.'  # Hide the '+' if hint is not requested
+                print(char, end=' ')
+            else:
+                # Print a space if outside the maze bounds
+                print(' ', end=' ')  
+        print()
+
 
 
 # Game overview and instructions
@@ -70,15 +81,18 @@ def update_player_position(maze, player_pos, move):
     return maze, player_pos
 
 def play_maze_game(maze):
-    # Starting position
     player_pos = (1, 0)
     maze[1][0] = '@'
+    show_hint = False
 
     while True:
-        print_maze(maze)
-        move = input("Enter your move (W/A/S/D): ").upper()
+        print_maze(maze, player_pos, show_hint)
+        move = input("Enter your move (W/A/S/D) or 'H' for a hint: ").upper()
 
-        if move in ['W', 'A', 'S', 'D']:
+        if move == 'H':
+            show_hint = True
+        elif move in ['W', 'A', 'S', 'D']:
+            show_hint = False  # Hide the hint when the player moves
             maze, player_pos = update_player_position(maze, player_pos, move)
         
         # Check for win condition
@@ -86,14 +100,13 @@ def play_maze_game(maze):
             print("Congratulations, you've reached the destination!")
             break
 
+
 def main():
     rows, cols = 11, 21  # Maze dimensions
     print_game_instructions()  # Print game instrunctions
     input()   # Wait for user input to continue
     maze = generate_maze(rows, cols)
     play_maze_game(maze)
-
-
 
 
 if __name__ == "__main__":
