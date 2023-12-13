@@ -37,7 +37,7 @@ public class Rsa {
 			long timeElapsed = 0;
 			
 			// Loop 3 times for each bit length
-			//for(int k = 0; k < 3; k++){
+			for(int k = 0; k < 3; k++){
 			
 				// Produce two random primes up to the specified bit length
 				BigInteger n = BigInteger.ONE;
@@ -84,7 +84,7 @@ public class Rsa {
 				
 				long endTime = System.currentTimeMillis();
 				timeElapsed += (endTime - startTime);
-			//}
+			}
 
 			// Print average time for each bit length
 			System.out.println("" + bitLength + "  " + (timeElapsed));
