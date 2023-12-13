@@ -46,7 +46,7 @@ public class Rsa {
 					BigInteger p = BigInteger.probablePrime(bitLength, r);
 					BigInteger q = BigInteger.probablePrime(bitLength, r);
 					n = p.multiply(q);
-					//System.out.println("p="+p+" q="+q+" n="+n);
+					System.out.println("Bit length:"+bitLength+", Generated: p="+p+" q="+q+" n="+n);
 
 					// recalculate the bit length based on the produced value of n
 					// it could be less than bitLength. We want it to be the same.
@@ -63,7 +63,7 @@ public class Rsa {
 					//System.out.println("initial i="+i);
 					
 					// Using smaller value for max, where max = 1.1 * sqrt(n)
-					BigInteger divMe = BigInteger.valueOf(20);
+					BigInteger divMe = BigInteger.valueOf(10);
 					BigInteger increaseVal = i.divide(divMe); // Find 10% of sqrt(n)
 					BigInteger max = i.add(increaseVal); // Add this to i (basically -> newMax = 1.1*i)
 					System.out.println("max=" +max+" i:" +i);
@@ -132,8 +132,8 @@ class ForkJoinRsaTask extends RecursiveAction
 		    {
 			if (n.mod(currentPrime).equals(BigInteger.ZERO))
 			    {
-				System.out.println("Keys (p,q): " + currentPrime+", " +
-						   n.divide(currentPrime));
+				System.out.println("Found keys (p,q): " + currentPrime+", " +
+						   n.divide(currentPrime) + "\n");
 				// iF this was a "home run" hack trying to just exit as soon as a factor was found,
 				// we could do that right here. Otherwise, we have to coordinate with the threads
 				// through the "cont" variable so they know they need to exit. 
