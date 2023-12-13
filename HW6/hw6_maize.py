@@ -41,7 +41,60 @@ def print_maze(maze):
     for row in maze:
         print(' '.join(row))
 
-# Example usage
-rows, cols = 11, 21  # Maze dimensions
-maze = generate_maze(rows, cols)
-print_maze(maze)
+
+# Game overview and instructions
+def print_game_instructions():
+    print("Welcome to the Maze Game!")
+    print("Your goal is to navigate from the start (top-left corner) to the destination (bottom-right corner).")
+    print("Instructions:")
+    print("  - Use 'W' to move up (north).")
+    print("  - Use 'S' to move down (south).")
+    print("  - Use 'A' to move left (west).")
+    print("  - Use 'D' to move right (east).")
+    print("  - Press 'H' for a hint.")
+    print("\nPress any key to start the game...")
+
+def update_player_position(maze, player_pos, move):
+    x, y = player_pos
+    maze[x][y] = '.'  # Clear the old position
+    if move == 'W': x -= 1
+    elif move == 'S': x += 1
+    elif move == 'A': y -= 1
+    elif move == 'D': y += 1
+
+    # Ensure the new position is valid
+    if 0 <= x < len(maze) and 0 <= y < len(maze[0]) and maze[x][y] != '#':
+        player_pos = (x, y)
+    
+    maze[x][y] = '@'  # Place the player in the new position
+    return maze, player_pos
+
+def play_maze_game(maze):
+    # Starting position
+    player_pos = (1, 0)
+    maze[1][0] = '@'
+
+    while True:
+        print_maze(maze)
+        move = input("Enter your move (W/A/S/D): ").upper()
+
+        if move in ['W', 'A', 'S', 'D']:
+            maze, player_pos = update_player_position(maze, player_pos, move)
+        
+        # Check for win condition
+        if player_pos == (len(maze) - 2, len(maze[0]) - 1):
+            print("Congratulations, you've reached the destination!")
+            break
+
+def main():
+    rows, cols = 11, 21  # Maze dimensions
+    print_game_instructions()  # Print game instrunctions
+    input()   # Wait for user input to continue
+    maze = generate_maze(rows, cols)
+    play_maze_game(maze)
+
+
+
+
+if __name__ == "__main__":
+    main()
