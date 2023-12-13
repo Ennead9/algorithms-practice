@@ -45,9 +45,13 @@ def dijkstra(n, graph, start, end):
 
     Returns the shortest distance and the shortest path from start to end city
     '''
-    visited = [False] * n   # List that tracks cities (vertices) that we've already visited
-    distance = [float('inf')] * n  # List to track shortest distance to each city from start city
-    previous = [-1] * n    # List to track previous city in shortest path
+    # List of bools to track whether cities have already been visited
+    visited = [False] * n
+    # List of floats to track shortest known distance to each city from start city
+    distance = [float('inf')] * n
+    # List to track previous city for each city on the shortest path from start
+    # Important: Initializes all to -1 to denote "No known path yet"
+    previous = [-1] * n
 
     # Set distance to the starting city at 0 of course
     distance[start] = 0
@@ -67,10 +71,16 @@ def dijkstra(n, graph, start, end):
         visited[u] = True   # Label current city as 'visited'
 
         # Update distances for neighboring cities
+        # Iterate over neighboring cities of current city 'u'
         for v, w in graph[u]:
+            # Checks both:
+            # If city 'v' has not been visited 
+            # AND if distance from start to 'v' via 'u' is shorter than known shortest distance thus far
             if not visited[v] and dist_u + w < distance[v]:
+                # If so, update shortest distance to 'v' & records 'u' as previous city on shortest path to 'v'
                 distance[v] = dist_u + w
                 previous[v] = u
+                # Finally, pushes 'v' onto priority queue with its updated distance
                 heapq.heappush(min_heap, (distance[v], v))
 
     path = []  # To store the shortest path
@@ -85,19 +95,21 @@ def dijkstra(n, graph, start, end):
 
 def main():
 
-    # Reads 'input.txt' file and stores values for n and graph to construct graph
+    # Reads 'input.txt' file, storing value for n and constructing graph
     input_filename = 'input.txt'
     n, graph = read_input(input_filename)
 
-    # Takes user input for start and destination cities
+    # Prompts user for start and destination cities
     start_city = int(input("Enter city of origin number: "))
     end_city = int(input("Enter the destination city number: "))
 
-    # Finds the shortest path using Dijkstra's algorithm (assuming input was valid)
-    # OUTPUT: shortest distance from A to B, along with ordered list of cities along that path!
-
+    # Validate that numbers entered are within range (0, n-1)
     if 0 <= start_city < n and 0 <= end_city < n:
+        
+        # Calls Dijkstra to find shortest path
         shortest_distance, shortest_path = dijkstra(n, graph, start_city, end_city)
+
+        # Prints value for shortest distance, then the city numbers in that path
         print(f"Shortest distance: {shortest_distance}")
         print("Shortest path:", " -> ".join(map(str, shortest_path)))
     else:
