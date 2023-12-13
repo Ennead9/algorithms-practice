@@ -15,9 +15,9 @@ def read_input(filename):
             # Split the line at the first occurrence of '#' and process the first part
             line = line.split('#')[0].strip()
             
-            # Skip empty lines or lines that are now just comments
+            # End upon first empty line9
             if not line:
-                continue
+                break
 
             # Parse line, storing cities and their distances
             parts = line.split()
@@ -28,7 +28,6 @@ def read_input(filename):
             # Only read in the first 3 elements for each line to avoid comments
             u, v, distance = map(int, line.split()[:3])
 
-            print(u)
             # Updates adjacency list to add undirected edges between cities u & v
             graph[u].append((v, distance))
             graph[v].append((u, distance))
@@ -110,7 +109,7 @@ def main():
         shortest_distance, shortest_path = dijkstra(n, graph, start_city, end_city)
 
         # Prints value for shortest distance, then the city numbers in that path
-        print(f"Shortest distance: {shortest_distance}")
+        print(f"Shortest distance: {shortest_distance}km")
         print("Shortest path:", " -> ".join(map(str, shortest_path)))
     else:
         print("Invalid city numbers. Please enter valid city numbers.")

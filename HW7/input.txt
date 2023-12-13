@@ -1,24 +1,25 @@
 13
-0 1 20    # Ratingen to Essen
-0 2 10    # Ratingen to Berlin
-0 3 15    # Ratingen to Paris
-1 2 5     # Essen to Berlin
-1 4 16    # Essen to Amsterdam
-1 7 25    # Essen to Nuremburg
-2 3 12    # Berlin to Paris
-2 5 30    # Berlin to Munich
-3 6 18    # Paris to Cologne
-4 5 8     # Amsterdam to Munich
-4 7 22    # Amsterdam to Nuremburg
-5 8 14    # Munich to Potsdam
-6 8 24    # Cologne to Potsdam
-7 9 19    # Nuremburg to Rome
-8 9 17    # Potsdam to Rome
-9 10 10   # Rome to Warsaw
-10 11 10  # Warsaw to Prague
-11 0 10   # Prague to Ratingen
-11 12 10  # Prague to Zurich
-12 4 10   # Zurich to Amsterdam
+0 1 24     # Ratingen to Essen
+0 2 554    # Ratingen to Berlin
+0 3 519    # Ratingen to Paris
+1 2 533    # Essen to Berlin
+1 4 203    # Essen to Amsterdam
+1 7 466    # Essen to Nuremburg
+2 3 1055   # Berlin to Paris
+2 5 586    # Berlin to Munich
+3 6 501    # Paris to Cologne
+4 5 823    # Amsterdam to Munich
+4 7 654    # Amsterdam to Nuremburg
+5 8 564    # Munich to Potsdam
+6 8 552    # Cologne to Potsdam
+7 9 1087   # Nuremburg to Rome
+8 9 1472   # Potsdam to Rome
+9 10 1784  # Rome to Warsaw
+10 11 741  # Warsaw to Prague
+11 0 731   # Prague to Ratingen
+11 12 684  # Prague to Zurich
+12 4 821   # Zurich to Amsterdam
+
 
 # Cities:
 # Ratingen, GER   -> 0
