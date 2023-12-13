@@ -19,18 +19,20 @@ def read_input(filename):
             if not line:
                 break
 
-            # Ensure line before comment consists of only 3 elements/values
-            parts = line.split()
-            if len(parts) != 3:
-                continue  # Skip lines that do not have exactly 3 elements
-
             # Parse line, storing cities and their distances
             # Only read in the first 3 elements for each line to avoid comments
-            u, v, distance = map(int, line.split()[:3])
+            # u, v, gas_prices, distance = map(int, line.split()[:4])
+
+            # Parse line, storing cities, distances, & gas price for that stretch
+            parts = line.split()[:4] # Split first four elements
+            u, v = map(int, parts[:2]) # Conv to ints
+            gas_price = float(parts[2]) # Conv to float
+            distance = int(parts[3]) # Conv to int
+
 
             # Updates adjacency list to add undirected edges between cities u & v
-            graph[u].append((v, distance))
-            graph[v].append((u, distance))
+            graph[u].append((v, distance, gas_price))
+            graph[v].append((u, distance, gas_price))
 
     return n, graph
 
@@ -71,13 +73,13 @@ def dijkstra(n, graph, start, end):
 
         # Update distances for neighboring cities
         # Iterate over neighboring cities of current city 'u'
-        for v, w in graph[u]:
+        for v, dist_to_v, _ in graph[u]:
             # Checks both:
             # If city 'v' has not been visited 
             # AND if distance from start to 'v' via 'u' is shorter than known shortest distance thus far
-            if not visited[v] and dist_u + w < distance[v]:
+            if not visited[v] and dist_u + dist_to_v < distance[v]:
                 # If so, update shortest distance to 'v' & records 'u' as previous city on shortest path to 'v'
-                distance[v] = dist_u + w
+                distance[v] = dist_u + dist_to_v
                 previous[v] = u
                 # Finally, pushes 'v' onto priority queue with its updated distance
                 heapq.heappush(min_heap, (distance[v], v))
@@ -92,7 +94,42 @@ def dijkstra(n, graph, start, end):
 
     return distance[end], path[::-1]  # Return shortest distance & path, in reverse order
 
+
+def calc_fuel_cost(path, graph, tank_size, fuel_efficiency):
+    total_cost = 0
+    fuel_left = tank_size  # Assume we start with a full tank
+
+    # Iterate over current path
+    for i in range(len(path) - 1):
+        u = path[i]  # Set u as current city
+        v = path[i + 1]  # Set v as next city
+    
+        # Finds edge connecting current city to next
+        edge = next((edge for edge in graph[u] if edge[0] == v), None)
+
+        # Set distance & gas_price for calculation based on graph information
+        # Sets distance & price for this route
+        distance, gas_price = edge[1], edge[2]
+        fuel_needed = distance / fuel_efficiency
+
+        # If you run out of gas, refuel
+        if fuel_needed > fuel_left:
+            # Calc cost to refuel tank completely and add to total_cost
+            total_cost += (tank_size - fuel_left) * gas_price
+            fuel_left = tank_size
+
+        # Minus fuel for this stretch
+        fuel_left -= fuel_needed
+
+    return total_cost
+
+
+
 def main():
+
+    # Default values for fuel calcs
+    tank_size = 60 # Tank size in liters
+    fuel_efficiency = 4 # liters/km ?
 
     # Reads 'input.txt' file, storing value for n and constructing graph
     input_filename = 'input.txt'
@@ -108,9 +145,12 @@ def main():
         # Calls Dijkstra to find shortest path
         shortest_distance, shortest_path = dijkstra(n, graph, start_city, end_city)
 
+        # Calc fuel cost
+        total_cost = calc_fuel_cost(shortest_path, graph, tank_size, fuel_efficiency)
         # Prints value for shortest distance, then the city numbers in that path
         print(f"Shortest distance: {shortest_distance}km")
         print("Shortest path:", " -> ".join(map(str, shortest_path)))
+        print(f"Total fuel cost:  €{total_cost:0.2f}")
     else:
         print("Invalid city numbers. Please enter valid city numbers.")
 
