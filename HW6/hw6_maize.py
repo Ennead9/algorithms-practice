@@ -93,6 +93,7 @@ def update_player_position(maze, player_pos, move):
 # DFS function with memoization
 def dfs_find_path(maze, x, y, destination, path_cache, visited):
     if (x, y) == destination:
+        path_cache[x][y] = True
         return True
     if not (0 <= x < len(maze) and 0 <= y < len(maze[0])) or maze[x][y] == '#' or (x, y) in visited:
         return False
@@ -102,15 +103,11 @@ def dfs_find_path(maze, x, y, destination, path_cache, visited):
     if path_cache[x][y] is not None:
         return path_cache[x][y]
 
-    # Assume this path is not valid initially
-    path_cache[x][y] = False
-
     # Explore all possible directions
     for dx, dy in [(-1, 0), (0, 1), (1, 0), (0, -1)]:
         nx, ny = x + dx, y + dy
         if dfs_find_path(maze, nx, ny, destination, path_cache, visited):
             path_cache[x][y] = True
-            maze[x][y] = '+'  # Only mark '+' if the path leads to the destination
             return True
 
     visited.remove((x, y))
@@ -134,7 +131,8 @@ def play_maze_game(maze, cache):
     path_cache = copy_maze(cache)  # Use a local copy of the cache
 
     while True:
-        print_maze(maze, player_pos, path_cache, show_hint=False)
+        # print_maze(maze, player_pos, path_cache, show_hint=False)
+        print_full_maze(maze, cache, show_hint=False)  # For debugging, print the full maze
         move = input("Enter your move (W/A/S/D) or 'H' for a hint: ").upper()
 
         if move == 'H':
