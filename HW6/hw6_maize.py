@@ -83,12 +83,14 @@ def update_player_position(maze, player_pos, move):
 
 
 # DFS function with memoization
-def dfs_find_path(maze, x, y, destination, path_cache):
+def dfs_find_path(maze, x, y, destination, path_cache, visited):
     if (x, y) == destination:
         return True  # Base case: destination reached
     
-    if not (0 <= x < len(maze) and 0 <= y < len(maze[0])) or maze[x][y] == '#':
-        return False  # Invalid move
+    if not (0 <= x < len(maze) and 0 <= y < len(maze[0])) or maze[x][y] == '#' or (x, y) in visited:
+        return False  # Invalid move or already visited
+    
+    visited.add((x, y))  # Mark the current cell as visited
     
     if path_cache[x][y] is not None:  # Return the cached result if available
         return path_cache[x][y]
@@ -98,14 +100,16 @@ def dfs_find_path(maze, x, y, destination, path_cache):
     
     # Explore all possible directions
     for dx, dy in [(-1, 0), (0, 1), (1, 0), (0, -1)]:
-        if dfs_find_path(maze, x + dx, y + dy, destination, path_cache):
+        if dfs_find_path(maze, x + dx, y + dy, destination, path_cache, visited):
             path_cache[x][y] = True
             return True  # Path found
     
     # Mark the current cell as not part of the path
     maze[x][y] = '.'
     path_cache[x][y] = False
+    visited.remove((x, y))  # Remove the current cell from the visited set as we backtrack
     return False
+
 
 
 def initialize_cache(rows, cols):
@@ -129,7 +133,8 @@ def play_maze_game(maze, cache):
 
         if move == 'H':
             hint_maze = copy_maze(maze)
-            dfs_find_path(hint_maze, player_pos[0], player_pos[1], destination, path_cache)
+            visited = set()  # Initialize the visited set
+            dfs_find_path(hint_maze, player_pos[0], player_pos[1], destination, path_cache, visited)
             print_maze(hint_maze, player_pos, show_hint=True)
         elif move in ['W', 'A', 'S', 'D']:
             maze, player_pos = update_player_position(maze, player_pos, move)
