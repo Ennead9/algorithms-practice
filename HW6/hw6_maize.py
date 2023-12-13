@@ -37,20 +37,28 @@ def generate_maze(rows, cols):
     add_path_to_maze(maze, rows, cols)
     return maze
 
-def print_maze(maze, player_pos, show_hint=False):
+def print_maze(maze, player_pos, path_cache, show_hint=False):
     x, y = player_pos
     for i in range(x - 1, x + 2):
         for j in range(y - 1, y + 2):
             if 0 <= i < len(maze) and 0 <= j < len(maze[0]):
-                char = maze[i][j]
-                if char == '+' and not show_hint:
-                    char = '.'  # Hide the '+' if hint is not requested
-                print(char, end=' ')
+                if show_hint and path_cache[i][j]:
+                    print('+', end=' ')
+                else:
+                    print(maze[i][j] if maze[i][j] != '+' else '.', end=' ')
             else:
-                # Print a space if outside the maze bounds
-                print(' ', end=' ')  
+                print(' ', end=' ')  # Print a space if outside the maze bounds
         print()
 
+# Print entire maze for debugging help issue
+def print_full_maze(maze, path_cache, show_hint=False):
+    for i in range(len(maze)):
+        for j in range(len(maze[0])):
+            if show_hint and path_cache[i][j]:
+                print('+', end=' ')
+            else:
+                print(maze[i][j], end=' ')
+        print()
 
 
 # Game overview and instructions
@@ -85,29 +93,27 @@ def update_player_position(maze, player_pos, move):
 # DFS function with memoization
 def dfs_find_path(maze, x, y, destination, path_cache, visited):
     if (x, y) == destination:
-        return True  # Base case: destination reached
-    
+        return True
     if not (0 <= x < len(maze) and 0 <= y < len(maze[0])) or maze[x][y] == '#' or (x, y) in visited:
-        return False  # Invalid move or already visited
-    
-    visited.add((x, y))  # Mark the current cell as visited
-    
-    if path_cache[x][y] is not None:  # Return the cached result if available
+        return False
+
+    visited.add((x, y))
+
+    if path_cache[x][y] is not None:
         return path_cache[x][y]
-    
-    # Mark the current cell as part of the path
-    maze[x][y] = '+'
-    
+
+    # Assume this path is not valid initially
+    path_cache[x][y] = False
+
     # Explore all possible directions
     for dx, dy in [(-1, 0), (0, 1), (1, 0), (0, -1)]:
-        if dfs_find_path(maze, x + dx, y + dy, destination, path_cache, visited):
+        nx, ny = x + dx, y + dy
+        if dfs_find_path(maze, nx, ny, destination, path_cache, visited):
             path_cache[x][y] = True
-            return True  # Path found
-    
-    # Mark the current cell as not part of the path
-    maze[x][y] = '.'
-    path_cache[x][y] = False
-    visited.remove((x, y))  # Remove the current cell from the visited set as we backtrack
+            maze[x][y] = '+'  # Only mark '+' if the path leads to the destination
+            return True
+
+    visited.remove((x, y))
     return False
 
 
@@ -128,14 +134,16 @@ def play_maze_game(maze, cache):
     path_cache = copy_maze(cache)  # Use a local copy of the cache
 
     while True:
-        print_maze(maze, player_pos, show_hint=False)
+        print_maze(maze, player_pos, path_cache, show_hint=False)
         move = input("Enter your move (W/A/S/D) or 'H' for a hint: ").upper()
 
         if move == 'H':
             hint_maze = copy_maze(maze)
             visited = set()  # Initialize the visited set
-            dfs_find_path(hint_maze, player_pos[0], player_pos[1], destination, path_cache, visited)
-            print_maze(hint_maze, player_pos, show_hint=True)
+            if dfs_find_path(hint_maze, player_pos[0], player_pos[1], destination, path_cache, visited):
+                print_maze(hint_maze, player_pos, path_cache, show_hint=True)
+            else:
+                print("No path found.")  # For debugging, remove this later
         elif move in ['W', 'A', 'S', 'D']:
             maze, player_pos = update_player_position(maze, player_pos, move)
         
