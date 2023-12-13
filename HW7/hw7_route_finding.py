@@ -51,19 +51,25 @@ def dijkstra(n, graph, start, end):
 
     path = []
     u = end
+
+    # Backtracks from destination city to start city to reconstruct the shortest path
     while u != -1:
         path.append(u)
         u = previous[u]
 
-    return distance[end], path[::-1]
+    return distance[end], path[::-1]  # Return shortest distance & path, in reverse order
 
 def main():
+    
+    # Reads 'input.txt' file and stores values for n and graph to construct graph
     input_filename = 'input.txt'
     n, graph = read_input(input_filename)
 
+    # Takes user input for start and destination cities
     start_city = int(input("Enter the start city number: "))
     end_city = int(input("Enter the destination city number: "))
 
+    # Finds the shortest path using Dijkstra's algorithm (assuming input was valid)
     if 0 <= start_city < n and 0 <= end_city < n:
         shortest_distance, shortest_path = dijkstra(n, graph, start_city, end_city)
         print(f"Shortest distance: {shortest_distance}")
