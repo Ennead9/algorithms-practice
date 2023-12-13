@@ -1,28 +1,9 @@
 # Counting Sort Algorithm (Linear)
-# Followed this for guidance: https://www.geeksforgeeks.org/counting-sort/
+# Followed this for guidance on counting sort: https://www.geeksforgeeks.org/counting-sort/
+# Radix & Bubble were my own
 
 import random
 import time
-import matplotlib.pyplot as plt
-import matplotlib.patches as patches
-
-# Bubble Sort implementation
-def bubbleSort(arr):
-    num_passes = 0
-
-    # Outer loop to move onto next number to move/sort
-    for i in range(len(arr)):
-        swapped = False
-        # Inner loop to compare current value to others and swap accordingly
-        for j in range(len(arr) - i - 1):
-            if arr[j] > arr[j+1]:
-                arr[j], arr[j+1] = arr[j+1], arr[j]
-                swapped = True
-
-        num_passes += 1
-        if not swapped:
-            break
-    return num_passes
 
 # Original Counting Sort implementation
 def countSort(arr):
@@ -83,45 +64,41 @@ def rgb_countSort(arr, color_component):
 def radixSort(arr):
 
     for color_component in reversed(range(3)):
-        pixels = rgb_countSort(arr, color_component)
-    return pixels
+        sortedArr = rgb_countSort(arr, color_component)
+    return sortedArr
 
 
-def display_colors(rgb_list, figsize=(10, 2)):
-    fig, ax = plt.subplots(1, figsize=figsize)
+# Bubble Sort implementation
+def bubbleSort(arr):
+    num_passes = 0
 
-    ax.axis('off')
+    # Outer loop to move onto next number to move/sort
+    for i in range(len(arr)):
+        swapped = False
+        # Inner loop to compare current value to others and swap accordingly
+        for j in range(len(arr) - i - 1):
+            if arr[j] > arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+                swapped = True
 
-    for i, rgb in enumerate(rgb_list):
-        rect = patches.Rectangle((i, 0), 1, 1, linewidth=1, edgecolor='none', facecolor=[c/255 for c in rgb])
-        ax.add_patch(rect)
+        num_passes += 1
+        if not swapped:
+            break
 
-    plt.xlim(0, len(rgb_list))
-    plt.ylim(0, 1)
-
-    plt.show()
+    return arr
 
     
 def main():
 
-    # Data set size
-    n = 10
-
+    n = 10  # Data set size
     print("n        Linear - Radix (ms)  Comparison - Bubble (ms)")
 
     # Loop over n, increasing by factor of 10 each time
-    while n <= 1000:
+    while n <= 10000:
 
         # Create random data set & copy it
         data = [(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)) for _ in range (n)]
         data2 = list(data)
-
-        # Display unsorted colors
-        #display_colors(data)
-
-        # Debug: Print unsorted arrays
-        #print(f"Unsorted:")
-        #print(f"Radix: {data}\nBubble: {data2}\n")
 
         # Time Count Sort (Radix Sort)
         t1 = time.perf_counter()
@@ -135,13 +112,6 @@ def main():
 
         # Print results
         print(f"{n:<6} {t1:>15.6f} {t2:>20.6f}")
-        
-        # Debug: Print sorted arrays
-        #print(f"Sorted:")
-        #print(f"Radix: {data}\nBubble: {data2}\n")
-
-        # Display sorted colors
-        #display_colors(data)
 
         n *= 10
 
