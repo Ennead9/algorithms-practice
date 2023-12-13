@@ -19,7 +19,7 @@ def read_input(filename):
             if not line:
                 break
 
-            # Parse line, storing cities and their distances
+            # Ensure line before comment consists of only 3 elements/values
             parts = line.split()
             if len(parts) != 3:
                 continue  # Skip lines that do not have exactly 3 elements
